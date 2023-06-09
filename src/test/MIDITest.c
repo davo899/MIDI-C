@@ -1,5 +1,6 @@
 #include "test.h"
 #include "../main/MIDI.h"
+#include <stddef.h>
 
 int can_read_file_to_byte_array() {
   uint8_t test_bytes[] = {
@@ -15,4 +16,9 @@ int can_read_file_to_byte_array() {
     if (bytes[i] != test_bytes[i]) return TEST_FAIL;
   }
   return TEST_PASS;
+}
+
+int reading_from_non_existent_file_returns_null() {
+  int bytes_length;
+  return read_file_to_byte_array("non-existent-file", &bytes_length) == NULL ? TEST_PASS : TEST_FAIL;
 }

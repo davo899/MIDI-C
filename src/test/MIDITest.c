@@ -1,3 +1,4 @@
+#include "test.h"
 #include "../main/MIDI.h"
 
 int can_read_file_to_byte_array() {
@@ -8,10 +9,10 @@ int can_read_file_to_byte_array() {
 
   int bytes_length;
   uint8_t* bytes = read_file_to_byte_array("src/test/test.txt", &bytes_length);
-  if (bytes_length != test_bytes_length) return -1;
+  if (bytes_length != test_bytes_length) return TEST_FAIL;
 
   for (int i = 0; i < test_bytes_length; i++) {
-    if (bytes[i] != test_bytes[i]) return -1;
+    if (bytes[i] != test_bytes[i]) return TEST_FAIL;
   }
-  return 0;
+  return TEST_PASS;
 }

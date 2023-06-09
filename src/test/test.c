@@ -17,7 +17,6 @@ int tests_length = sizeof(tests) / sizeof(struct test);
 int main() {
   printf("\nRunning tests...\n");
   for (int i = 0; i < tests_length; i++) {
-    if (tests[i].function() == TEST_PASS) printf("%s: passed\n", tests[i].name);
-    else                                  printf("%s: failed\n", tests[i].name);
+    printf("%s: %s\n", tests[i].name, tests[i].function() == TEST_PASS ? "passed" : "failed");
   }
 }

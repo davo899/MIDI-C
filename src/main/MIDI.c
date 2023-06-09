@@ -5,6 +5,7 @@
 
 uint8_t* read_file_to_byte_array(char* filename, int* length) {
   FILE *fileptr = fopen(filename, "rb");
+  if (fileptr == NULL) return NULL;
   fseek(fileptr, 0, SEEK_END);
   *length = ftell(fileptr);
   rewind(fileptr);

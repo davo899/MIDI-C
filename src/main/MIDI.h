@@ -9,3 +9,4 @@ struct MIDI_file {
 };
 
 uint8_t* read_file_to_byte_array(char* filename, int* length);
+struct MIDI_file* read_MIDI_file(char* filename);

@@ -16,3 +16,10 @@ uint8_t* read_file_to_byte_array(char* filename, int* length) {
   
   return buffer;
 }
+
+struct MIDI_file* read_MIDI_file(char* filename) {
+  struct MIDI_file* MIDI_file = malloc(sizeof(struct MIDI_file));
+  MIDI_file->index = 0;
+  MIDI_file->bytes = read_file_to_byte_array(filename, &MIDI_file->length);
+  return MIDI_file;
+}

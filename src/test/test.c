@@ -10,7 +10,8 @@ struct test {
 
 struct test tests[] = {
   { .name = "Reading from non existent file returns null", .function = &reading_from_non_existent_file_returns_null },
-  { .name = "Can read file to byte array", .function = &can_read_file_to_byte_array }
+  { .name = "Can read file to byte array", .function = &can_read_file_to_byte_array },
+  { .name = "Can read MIDI file", .function = &can_read_MIDI_file }
 };
 int tests_length = sizeof(tests) / sizeof(struct test);
 

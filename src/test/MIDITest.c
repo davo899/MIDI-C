@@ -22,3 +22,8 @@ int reading_from_non_existent_file_returns_null() {
   int bytes_length;
   return read_file_to_byte_array("non-existent-file", &bytes_length) == NULL ? TEST_PASS : TEST_FAIL;
 }
+
+int can_read_MIDI_file() {
+  read_MIDI_file("test.mid");
+  return TEST_PASS;
+}

@@ -3,9 +3,7 @@
 #include <stddef.h>
 
 int can_read_file_to_byte_array() {
-  uint8_t test_bytes[] = {
-    0x61, 0x62, 0x63, 0x64, 0x68
-  };
+  uint8_t test_bytes[] = { 0x61, 0x62, 0x63, 0x64, 0x68 };
   int test_bytes_length = sizeof(test_bytes) / sizeof(uint8_t);
 
   int bytes_length;
@@ -26,4 +24,14 @@ int reading_from_non_existent_file_returns_null() {
 int can_read_MIDI_file() {
   read_MIDI_file("test.mid");
   return TEST_PASS;
+}
+
+int next_byte_advances_byte_index() {
+  struct MIDI_file MIDI_file = {
+    .bytes = malloc(2 * sizeof(uint8_t)),
+    .index = 0,
+    .length = 2
+  };
+  next_byte(&MIDI_file);
+  return MIDI_file.index == 1 ? TEST_PASS : TEST_FAIL;
 }

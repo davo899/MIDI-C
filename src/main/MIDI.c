@@ -23,3 +23,8 @@ struct MIDI_file* read_MIDI_file(char* filename) {
   MIDI_file->bytes = read_file_to_byte_array(filename, &MIDI_file->length);
   return MIDI_file;
 }
+
+uint8_t next_byte(struct MIDI_file* MIDI_file) {
+  if (MIDI_file->index == MIDI_file->length) return 0;
+  return MIDI_file->bytes[MIDI_file->index++];
+}

@@ -26,8 +26,18 @@ int tests_length = sizeof(tests) / sizeof(struct test);
 int main() {
   printf("\nRunning tests...\n");
   for (int i = 0; i < tests_length; i++) {
-    printf("%s: %s\n", tests[i].name, tests[i].function() == TEST_PASS ? "passed" : "failed");
+    printf("\033[0;37m");
+    printf("%s: ", tests[i].name);
+    if (tests[i].function() == TEST_PASS) {
+      printf("\033[0;32m");
+      printf("passed");
+    } else {
+      printf("\033[0;31m");
+      printf("failed");
+    }
+    printf("\n");
   }
+  printf("\033[0m");
 }
 
 int assert(bool pass) {

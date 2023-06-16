@@ -20,7 +20,7 @@ int can_read_file_to_byte_array() {
 
 int reading_from_non_existent_file_returns_null() {
   int bytes_length;
-  return read_file_to_byte_array("non-existent-file", &bytes_length) == NULL ? TEST_PASS : TEST_FAIL;
+  return assert(read_file_to_byte_array("non-existent-file", &bytes_length) == NULL);
 }
 
 int can_read_MIDI_file() {
@@ -35,7 +35,7 @@ int can_read_VLQ_zero() {
     .index = 0,
     .length = 1
   };
-  return next_variable_length_quantity(&MIDI_file) == 0 && MIDI_file.index == 1 ? TEST_PASS : TEST_FAIL;
+  return assert(next_variable_length_quantity(&MIDI_file) == 0 && MIDI_file.index == 1);
 }
 
 int can_read_VLQ_single() {
@@ -45,7 +45,7 @@ int can_read_VLQ_single() {
     .index = 0,
     .length = 1
   };
-  return next_variable_length_quantity(&MIDI_file) == 0x7B && MIDI_file.index == 1 ? TEST_PASS : TEST_FAIL;
+  return assert(next_variable_length_quantity(&MIDI_file) == 0x7B && MIDI_file.index == 1);
 }
 
 int can_read_VLQ_full() {
@@ -55,5 +55,5 @@ int can_read_VLQ_full() {
     .index = 0,
     .length = 4
   };
-  return next_variable_length_quantity(&MIDI_file) == 0xFFFFFFF && MIDI_file.index == 4 ? TEST_PASS : TEST_FAIL;
+  return assert(next_variable_length_quantity(&MIDI_file) == 0xFFFFFFF && MIDI_file.index == 4);
 }

@@ -26,3 +26,7 @@ int main() {
     printf("%s: %s\n", tests[i].name, tests[i].function() == TEST_PASS ? "passed" : "failed");
   }
 }
+
+int assert(bool pass) {
+  return pass ? TEST_PASS : TEST_FAIL;
+}

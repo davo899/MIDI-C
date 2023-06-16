@@ -17,6 +17,9 @@ struct test tests[] = {
   { .name = "Can read VLQ 0", .function = &can_read_VLQ_zero },
   { .name = "Can read 1 byte VLQ", .function = &can_read_VLQ_single },
   { .name = "Can read 4 byte VLQ", .function = &can_read_VLQ_full },
+
+  { .name = "Matching chunk type returns true", .function = &matching_chunk_type_returns_true },
+  { .name = "Non-matching chunk type returns false", .function = &non_matching_chunk_type_returns_false },
 };
 int tests_length = sizeof(tests) / sizeof(struct test);
 

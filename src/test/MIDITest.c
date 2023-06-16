@@ -57,3 +57,23 @@ int can_read_VLQ_full() {
   };
   return assert(next_variable_length_quantity(&MIDI_file) == 0xFFFFFFF && MIDI_file.index == 4);
 }
+
+int matching_chunk_type_returns_true() {
+  uint8_t bytes[] = { 0x4D, 0x54, 0x68, 0x64 };
+  struct MIDI_file MIDI_file = {
+    .bytes = bytes,
+    .index = 0,
+    .length = 4
+  };
+  return assert(match_chunk_type(&MIDI_file, "MThd"));
+}
+
+int non_matching_chunk_type_returns_false() {
+  uint8_t bytes[] = { 0x4D, 0x54, 0x68, 0x64 };
+  struct MIDI_file MIDI_file = {
+    .bytes = bytes,
+    .index = 0,
+    .length = 4
+  };
+  return assert(!match_chunk_type(&MIDI_file, "MTrk"));
+}

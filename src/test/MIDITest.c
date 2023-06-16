@@ -18,7 +18,7 @@ int can_read_file_to_byte_array() {
 
 int reading_from_non_existent_file_returns_null() {
   int bytes_length;
-  return read_file_to_byte_array("non-existent-file", &bytes_length) == NULL ? TEST_PASS : TEST_FAIL;
+  return assert(read_file_to_byte_array("non-existent-file", &bytes_length) == NULL);
 }
 
 int can_read_MIDI_file() {
@@ -26,12 +26,52 @@ int can_read_MIDI_file() {
   return TEST_PASS;
 }
 
-int next_byte_advances_byte_index() {
+int can_read_VLQ_zero() {
+  uint8_t bytes[] = { 0x00 };
   struct MIDI_file MIDI_file = {
-    .bytes = malloc(2 * sizeof(uint8_t)),
+    .bytes = bytes,
     .index = 0,
-    .length = 2
+    .length = 1
   };
-  next_byte(&MIDI_file);
-  return MIDI_file.index == 1 ? TEST_PASS : TEST_FAIL;
+  return assert(next_variable_length_quantity(&MIDI_file) == 0 && MIDI_file.index == 1);
+}
+
+int can_read_VLQ_single() {
+  uint8_t bytes[] = { 0x7B };
+  struct MIDI_file MIDI_file = {
+    .bytes = bytes,
+    .index = 0,
+    .length = 1
+  };
+  return assert(next_variable_length_quantity(&MIDI_file) == 0x7B && MIDI_file.index == 1);
+}
+
+int can_read_VLQ_full() {
+  uint8_t bytes[] = { 0xFF, 0xFF, 0xFF, 0x7F };
+  struct MIDI_file MIDI_file = {
+    .bytes = bytes,
+    .index = 0,
+    .length = 4
+  };
+  return assert(next_variable_length_quantity(&MIDI_file) == 0xFFFFFFF && MIDI_file.index == 4);
+}
+
+int matching_chunk_type_returns_true() {
+  uint8_t bytes[] = { 0x4D, 0x54, 0x68, 0x64 };
+  struct MIDI_file MIDI_file = {
+    .bytes = bytes,
+    .index = 0,
+    .length = 4
+  };
+  return assert(match_chunk_type(&MIDI_file, "MThd"));
+}
+
+int non_matching_chunk_type_returns_false() {
+  uint8_t bytes[] = { 0x4D, 0x54, 0x68, 0x64 };
+  struct MIDI_file MIDI_file = {
+    .bytes = bytes,
+    .index = 0,
+    .length = 4
+  };
+  return assert(!match_chunk_type(&MIDI_file, "MTrk"));
 }

@@ -24,7 +24,20 @@ struct MIDI_file* read_MIDI_file(char* filename) {
   return MIDI_file;
 }
 
-uint8_t next_byte(struct MIDI_file* MIDI_file) {
-  if (MIDI_file->index == MIDI_file->length) return 0;
-  return MIDI_file->bytes[MIDI_file->index++];
+uint32_t next_variable_length_quantity(struct MIDI_file* MIDI_file) {
+  uint32_t result = 0;
+  int bytes_read = 0;
+  uint8_t byte;
+  do {
+    byte = MIDI_file->bytes[MIDI_file->index++];
+    result <<= 7;
+    result |= byte & 0b01111111;
+    bytes_read++;
+  } while (bytes_read < 4 && (byte & 0b10000000) > 0);
+
+  return result;
+}
+
+bool match_chunk_type(struct MIDI_file* MIDI_file, char* chunk_type) {
+  return false;
 }

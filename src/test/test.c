@@ -11,14 +11,35 @@ struct test {
 struct test tests[] = {
   { .name = "Reading from non existent file returns null", .function = &reading_from_non_existent_file_returns_null },
   { .name = "Can read file to byte array", .function = &can_read_file_to_byte_array },
+
   { .name = "Can read MIDI file", .function = &can_read_MIDI_file },
-  { .name = "next_byte advances byte index", .function = &next_byte_advances_byte_index }
+
+  { .name = "Can read VLQ 0", .function = &can_read_VLQ_zero },
+  { .name = "Can read 1 byte VLQ", .function = &can_read_VLQ_single },
+  { .name = "Can read 4 byte VLQ", .function = &can_read_VLQ_full },
+
+  { .name = "Matching chunk type returns true", .function = &matching_chunk_type_returns_true },
+  { .name = "Non-matching chunk type returns false", .function = &non_matching_chunk_type_returns_false },
 };
 int tests_length = sizeof(tests) / sizeof(struct test);
 
 int main() {
   printf("\nRunning tests...\n");
   for (int i = 0; i < tests_length; i++) {
-    printf("%s: %s\n", tests[i].name, tests[i].function() == TEST_PASS ? "passed" : "failed");
+    printf("\033[0;37m");
+    printf("%s: ", tests[i].name);
+    if (tests[i].function() == TEST_PASS) {
+      printf("\033[0;32m");
+      printf("passed");
+    } else {
+      printf("\033[0;31m");
+      printf("failed");
+    }
+    printf("\n");
   }
+  printf("\033[0m");
+}
+
+int assert(bool pass) {
+  return pass ? TEST_PASS : TEST_FAIL;
 }

@@ -27,3 +27,33 @@ int can_read_MIDI_file() {
   read_MIDI_file("test.mid");
   return TEST_PASS;
 }
+
+int can_read_VLQ_zero() {
+  uint8_t bytes[] = { 0x00 };
+  struct MIDI_file MIDI_file = {
+    .bytes = bytes,
+    .index = 0,
+    .length = 1
+  };
+  return next_variable_length_quantity(&MIDI_file) == 0 && MIDI_file.index == 1 ? TEST_PASS : TEST_FAIL;
+}
+
+int can_read_VLQ_single() {
+  uint8_t bytes[] = { 0x7B };
+  struct MIDI_file MIDI_file = {
+    .bytes = bytes,
+    .index = 0,
+    .length = 1
+  };
+  return next_variable_length_quantity(&MIDI_file) == 0x7B && MIDI_file.index == 1 ? TEST_PASS : TEST_FAIL;
+}
+
+int can_read_VLQ_full() {
+  uint8_t bytes[] = { 0xFF, 0xFF, 0xFF, 0x7F };
+  struct MIDI_file MIDI_file = {
+    .bytes = bytes,
+    .index = 0,
+    .length = 4
+  };
+  return next_variable_length_quantity(&MIDI_file) == 0xFFFFFFF && MIDI_file.index == 4 ? TEST_PASS : TEST_FAIL;
+}

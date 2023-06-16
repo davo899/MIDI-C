@@ -23,3 +23,7 @@ struct MIDI_file* read_MIDI_file(char* filename) {
   MIDI_file->bytes = read_file_to_byte_array(filename, &MIDI_file->length);
   return MIDI_file;
 }
+
+uint32_t next_variable_length_quantity(struct MIDI_file* MIDI_file) {
+  return 0;
+}

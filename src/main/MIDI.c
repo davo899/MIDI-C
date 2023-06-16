@@ -25,5 +25,15 @@ struct MIDI_file* read_MIDI_file(char* filename) {
 }
 
 uint32_t next_variable_length_quantity(struct MIDI_file* MIDI_file) {
-  return 0;
+  uint32_t result = 0;
+  int bytes_read = 0;
+  uint8_t byte;
+  do {
+    byte = MIDI_file->bytes[MIDI_file->index++];
+    result <<= 7;
+    result |= byte & 0b01111111;
+    bytes_read++;
+  } while (bytes_read < 4 && (byte & 0b10000000) > 0);
+
+  return result;
 }

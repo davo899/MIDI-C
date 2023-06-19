@@ -3,10 +3,27 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+enum division {
+  TICKS_PER_QUATER_NOTE,
+  TICKS_PER_FRAME
+};
+
+enum format {
+  SINGLE_TRACK,
+  MULTI_TRACK_SIMULTANEOUS,
+  MULTI_TRACK_INDEPENDENT
+};
+
 struct MIDI_file {
   uint8_t* bytes;
   int index;
   int length;
+};
+
+struct MIDI_header {
+  enum format format;
+  int tracks;
+  enum division division;
 };
 
 uint8_t* read_file_to_byte_array(char* filename, int* length);

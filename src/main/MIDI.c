@@ -39,7 +39,7 @@ uint32_t next_variable_length_quantity(struct MIDI_file* MIDI_file) {
 }
 
 uint8_t next_byte(struct MIDI_file* MIDI_file) {
-  return 0;
+  return MIDI_file->bytes[MIDI_file->index++];
 }
 
 bool match_chunk_type(struct MIDI_file* MIDI_file, char* chunk_type) {

@@ -38,7 +38,7 @@ uint32_t next_variable_length_quantity(struct MIDI_file* MIDI_file) {
   return result;
 }
 
-uint8_t next_byte(struct MIDI_file* MIDI_file) {
+inline uint8_t next_byte(struct MIDI_file* MIDI_file) {
   return MIDI_file->bytes[MIDI_file->index++];
 }
 

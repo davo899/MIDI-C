@@ -2,6 +2,8 @@
 #include "../main/MIDI.h"
 #include <stddef.h>
 
+#define ASSERT(X) if (!(X)) return TEST_FAIL;
+
 int can_read_file_to_byte_array() {
   uint8_t test_bytes[] = { 0x61, 0x62, 0x63, 0x64, 0x68 };
   int test_bytes_length = sizeof(test_bytes) / sizeof(uint8_t);
@@ -18,7 +20,8 @@ int can_read_file_to_byte_array() {
 
 int reading_from_non_existent_file_returns_null() {
   int bytes_length;
-  return assert(read_file_to_byte_array("non-existent-file", &bytes_length) == NULL);
+  ASSERT(read_file_to_byte_array("non-existent-file", &bytes_length) == NULL);
+  return TEST_PASS;
 }
 
 int can_read_MIDI_file() {
@@ -33,7 +36,8 @@ int can_read_VLQ_zero() {
     .index = 0,
     .length = 1
   };
-  return assert(next_variable_length_quantity(&MIDI_file) == 0 && MIDI_file.index == 1);
+  ASSERT(next_variable_length_quantity(&MIDI_file) == 0 && MIDI_file.index == 1);
+  return TEST_PASS;
 }
 
 int can_read_VLQ_single() {
@@ -43,7 +47,8 @@ int can_read_VLQ_single() {
     .index = 0,
     .length = 1
   };
-  return assert(next_variable_length_quantity(&MIDI_file) == 0x7B && MIDI_file.index == 1);
+  ASSERT(next_variable_length_quantity(&MIDI_file) == 0x7B && MIDI_file.index == 1);
+  return TEST_PASS;
 }
 
 int can_read_VLQ_full() {
@@ -53,7 +58,8 @@ int can_read_VLQ_full() {
     .index = 0,
     .length = 4
   };
-  return assert(next_variable_length_quantity(&MIDI_file) == 0xFFFFFFF && MIDI_file.index == 4);
+  ASSERT(next_variable_length_quantity(&MIDI_file) == 0xFFFFFFF && MIDI_file.index == 4);
+  return TEST_PASS;
 }
 
 int matching_chunk_type_returns_true() {
@@ -63,7 +69,8 @@ int matching_chunk_type_returns_true() {
     .index = 0,
     .length = 4
   };
-  return assert(match_chunk_type(&MIDI_file, "MThd"));
+  ASSERT(match_chunk_type(&MIDI_file, "MThd"));
+  return TEST_PASS;
 }
 
 int non_matching_chunk_type_returns_false() {
@@ -73,7 +80,8 @@ int non_matching_chunk_type_returns_false() {
     .index = 0,
     .length = 4
   };
-  return assert(!match_chunk_type(&MIDI_file, "MTrk"));
+  ASSERT(!match_chunk_type(&MIDI_file, "MTrk"));
+  return TEST_PASS;
 }
 
 int next_byte_advances_index() {
@@ -84,7 +92,8 @@ int next_byte_advances_index() {
     .length = 4
   };
   next_byte(&MIDI_file);
-  return assert(MIDI_file.index == 1);
+  ASSERT(MIDI_file.index == 1);
+  return TEST_PASS;
 }
 
 int next_byte_returns_next_byte() {
@@ -94,7 +103,8 @@ int next_byte_returns_next_byte() {
     .index = 1,
     .length = 4
   };
-  return assert(next_byte(&MIDI_file) == 0x54);
+  ASSERT(next_byte(&MIDI_file) == 0x54);
+  return TEST_PASS;
 }
 
 int next_byte_returns_zero_past_max_index() {
@@ -104,5 +114,6 @@ int next_byte_returns_zero_past_max_index() {
     .index = 4,
     .length = 4
   };
-  return assert(next_byte(&MIDI_file) == 0);
+  ASSERT(next_byte(&MIDI_file) == 0);
+  return TEST_PASS;
 }

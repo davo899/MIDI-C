@@ -43,7 +43,3 @@ int main() {
   }
   printf("\033[0m");
 }
-
-int assert(bool pass) {
-  return pass ? TEST_PASS : TEST_FAIL;
-}

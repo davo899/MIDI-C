@@ -24,6 +24,9 @@ struct test tests[] = {
   { .name = "next_byte advances index", .function = &next_byte_advances_index },
   { .name = "next_byte returns next byte", .function = &next_byte_returns_next_byte },
   { .name = "next_byte returns 0 past max index", .function = &next_byte_returns_zero_past_max_index },
+
+  { .name = "Can read header", .function = &can_read_header },
+  { .name = "Reading invalid header returns NULL", .function = &invalid_header_returns_null },
 };
 int tests_length = sizeof(tests) / sizeof(struct test);
 

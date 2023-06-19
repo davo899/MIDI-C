@@ -48,3 +48,7 @@ bool match_chunk_type(struct MIDI_file* MIDI_file, char* chunk_type) {
   }
   return true;
 }
+
+struct MIDI_header* next_MIDI_header(struct MIDI_file* MIDI_file) {
+  return NULL;
+}

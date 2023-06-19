@@ -15,3 +15,6 @@ int non_matching_chunk_type_returns_false();
 int next_byte_advances_index();
 int next_byte_returns_next_byte();
 int next_byte_returns_zero_past_max_index();
+
+int invalid_header_returns_null();
+int can_read_header();

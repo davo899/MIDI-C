@@ -43,5 +43,8 @@ uint8_t next_byte(struct MIDI_file* MIDI_file) {
 }
 
 bool match_chunk_type(struct MIDI_file* MIDI_file, char* chunk_type) {
-  return false;
+  for (int i = 0; chunk_type[i] != '\0'; i++) {
+    if ((char)next_byte(MIDI_file) != chunk_type[i]) return false;
+  }
+  return true;
 }

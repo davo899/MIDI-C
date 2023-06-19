@@ -75,3 +75,34 @@ int non_matching_chunk_type_returns_false() {
   };
   return assert(!match_chunk_type(&MIDI_file, "MTrk"));
 }
+
+int next_byte_advances_index() {
+  uint8_t bytes[] = { 0x4D, 0x54, 0x68, 0x64 };
+  struct MIDI_file MIDI_file = {
+    .bytes = bytes,
+    .index = 0,
+    .length = 4
+  };
+  next_byte(&MIDI_file);
+  return assert(MIDI_file.index == 1);
+}
+
+int next_byte_returns_next_byte() {
+  uint8_t bytes[] = { 0x4D, 0x54, 0x68, 0x64 };
+  struct MIDI_file MIDI_file = {
+    .bytes = bytes,
+    .index = 1,
+    .length = 4
+  };
+  return assert(next_byte(&MIDI_file) == 0x54);
+}
+
+int next_byte_returns_zero_past_max_index() {
+  uint8_t bytes[] = { 0x4D, 0x54, 0x68, 0x64 };
+  struct MIDI_file MIDI_file = {
+    .bytes = bytes,
+    .index = 4,
+    .length = 4
+  };
+  return assert(next_byte(&MIDI_file) == 0);
+}

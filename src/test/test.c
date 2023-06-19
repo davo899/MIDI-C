@@ -20,6 +20,10 @@ struct test tests[] = {
 
   { .name = "Matching chunk type returns true", .function = &matching_chunk_type_returns_true },
   { .name = "Non-matching chunk type returns false", .function = &non_matching_chunk_type_returns_false },
+
+  { .name = "next_byte advances index", .function = &next_byte_advances_index },
+  { .name = "next_byte returns next byte", .function = &next_byte_returns_next_byte },
+  { .name = "next_byte returns 0 past max index", .function = &next_byte_returns_zero_past_max_index },
 };
 int tests_length = sizeof(tests) / sizeof(struct test);
 

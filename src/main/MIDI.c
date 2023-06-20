@@ -38,9 +38,19 @@ uint32_t next_variable_length_quantity(struct MIDI_file* MIDI_file) {
   return result;
 }
 
-inline uint8_t next_byte(struct MIDI_file* MIDI_file) {
+uint8_t next_byte(struct MIDI_file* MIDI_file) {
   if (MIDI_file->index >= MIDI_file->length) return 0;
   return MIDI_file->bytes[MIDI_file->index++];
+}
+
+uint16_t next_half_word(struct MIDI_file* MIDI_file) {
+  uint16_t byte = next_byte(MIDI_file);
+  return (byte << 8) | next_byte(MIDI_file);
+}
+
+uint32_t next_full_word(struct MIDI_file* MIDI_file) {
+  uint32_t half_word = next_half_word(MIDI_file);
+  return (half_word << 16) | next_half_word(MIDI_file);
 }
 
 bool match_chunk_type(struct MIDI_file* MIDI_file, char* chunk_type) {
@@ -51,5 +61,13 @@ bool match_chunk_type(struct MIDI_file* MIDI_file, char* chunk_type) {
 }
 
 struct MIDI_header* next_MIDI_header(struct MIDI_file* MIDI_file) {
-  return NULL;
+  if (!match_chunk_type(MIDI_file, "MThd")) return NULL;
+  if (next_full_word(MIDI_file) != 6) return NULL;
+
+  struct MIDI_header* MIDI_header = (struct MIDI_header*)malloc(sizeof(struct MIDI_header));
+  MIDI_header->format = next_half_word(MIDI_file);
+  MIDI_header->tracks = next_half_word(MIDI_file);
+  MIDI_header->division = next_half_word(MIDI_file);
+
+  return MIDI_header;
 }

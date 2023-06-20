@@ -1,5 +1,4 @@
 #include "test.h"
-#include <stdio.h>
 #include <stddef.h>
 #include "MIDITest.h"
 

@@ -147,7 +147,7 @@ int can_read_header() {
   uint8_t bytes[] = {
     0x4D, 0x54, 0x68, 0x64,
     0x00, 0x00, 0x00, 0x06,
-    0x00, 0x01,
+    0x00, 0x02,
     0x00, 0x10,
     0x80, 0x02
   };
@@ -161,4 +161,5 @@ int can_read_header() {
   ASSERT(MIDI_header->format == MULTI_TRACK_INDEPENDENT);
   ASSERT(MIDI_header->tracks == 0x10);
   ASSERT(MIDI_header->division == 0x8002);
+  return TEST_PASS;
 }

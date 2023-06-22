@@ -1,7 +1,6 @@
-#include "MIDI.h"
+#include "MIDI_internal.h"
 #include <stddef.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 uint8_t* read_file_to_byte_array(char* filename, int* length) {
   FILE *fileptr = fopen(filename, "rb");

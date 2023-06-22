@@ -1,5 +1,5 @@
 #include "test.h"
-#include "../main/MIDI.h"
+#include "../main/MIDI_internal.h"
 #include <stddef.h>
 
 int can_read_file_to_byte_array() {

@@ -1,4 +1,4 @@
-#include "MIDI_event.h"
+#include "MIDI_internal.h"
 
 struct event* MIDI_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code) {
   struct event* event = (struct event*)malloc(sizeof(struct event));

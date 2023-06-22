@@ -1,7 +1,4 @@
-#include "event.h"
-#include "MIDI_event.h"
-#include "meta_event.h"
-#include "system_event.h"
+#include "MIDI_internal.h"
 #include <stdio.h>
 
 struct event* next_track_event(struct MIDI_file* MIDI_file, uint8_t event_code) {

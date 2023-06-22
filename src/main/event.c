@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 struct event* next_track_event(struct MIDI_file* MIDI_file, uint8_t event_code) {
-  if (0x80 <= event_code && event_code < 0xFF) MIDI_event_reader(MIDI_file, event_code);
+  if (0x80 <= event_code && event_code < 0xFF) return MIDI_event_reader(MIDI_file, event_code);
 
   return unimplemented_event_reader(MIDI_file, event_code);
 }

@@ -21,6 +21,7 @@ enum event_type {
 };
 
 struct event {
+  uint32_t deltatime;
   enum event_type type;
   void* body;
 };

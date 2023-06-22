@@ -1,5 +1,8 @@
 #pragma once
 
+#include "MIDI.h"
+#include <stdint.h>
+
 enum event_type {
   // MIDI Events
   NOTE_OFF, NOTE_ON, POLYPHONIC_KEY_PRESSURE, CONTROL_CHANGE,
@@ -22,4 +25,4 @@ struct event {
   void* body;
 };
 
-extern struct event (*event_readers[])(struct MIDI_file*);
+extern struct event (*event_readers[])(struct MIDI_file*, uint8_t);

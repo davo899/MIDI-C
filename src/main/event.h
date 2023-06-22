@@ -25,4 +25,4 @@ struct event {
   void* body;
 };
 
-extern struct event (*event_readers[])(struct MIDI_file*, uint8_t);
+struct event* unimplemented_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code);

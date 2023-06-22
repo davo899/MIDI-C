@@ -1,6 +1,6 @@
 #include "test.h"
 #include <stddef.h>
-#include "MIDITest.h"
+#include "MIDI_test.h"
 
 struct test {
   char* name;

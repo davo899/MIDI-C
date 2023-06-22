@@ -1,5 +1,7 @@
 #include "event.h"
 #include "MIDI_event.h"
+#include "meta_event.h"
+#include "system_event.h"
 #include <stdio.h>
 #include <stdlib.h>
 

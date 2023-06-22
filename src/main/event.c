@@ -3,7 +3,6 @@
 #include "meta_event.h"
 #include "system_event.h"
 #include <stdio.h>
-#include <stdlib.h>
 
 struct event* next_track_event(struct MIDI_file* MIDI_file, uint8_t event_code) {
   struct event* event = unimplemented_event_reader(MIDI_file, event_code);

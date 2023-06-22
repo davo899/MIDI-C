@@ -2,6 +2,7 @@
 
 #include "MIDI.h"
 #include <stdint.h>
+#include <stdlib.h>
 
 enum event_type {
   // MIDI Events

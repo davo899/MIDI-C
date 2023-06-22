@@ -13,3 +13,5 @@ struct note_toggle {
   int key;
   int velocity;
 };
+
+struct note_toggle* note_toggle_reader(struct MIDI_file* MIDI_file);

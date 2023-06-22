@@ -2,8 +2,6 @@
 #include "../main/MIDI.h"
 #include <stddef.h>
 
-#define ASSERT(X) if (!(X)) return TEST_FAIL;
-
 int can_read_file_to_byte_array() {
   uint8_t test_bytes[] = { 0x61, 0x62, 0x63, 0x64, 0x68 };
   int test_bytes_length = sizeof(test_bytes) / sizeof(uint8_t);

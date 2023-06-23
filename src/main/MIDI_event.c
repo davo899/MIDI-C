@@ -22,6 +22,11 @@ struct event* MIDI_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code)
       MIDI_event->body = note_toggle_reader(MIDI_file);
       break;
 
+    case 0b1011:
+      event->type = CONTROL_CHANGE;
+      MIDI_event->body = control_change_reader(MIDI_file);
+      break;
+
     default:
       event = unimplemented_event_reader(MIDI_file, event_code);
   }
@@ -34,4 +39,11 @@ struct note_toggle* note_toggle_reader(struct MIDI_file* MIDI_file) {
   note_toggle->key = next_byte(MIDI_file) & 0b01111111;
   note_toggle->velocity = next_byte(MIDI_file) & 0b01111111;
   return note_toggle;
+}
+
+struct control_change* control_change_reader(struct MIDI_file* MIDI_file) {
+  struct control_change* control_change = (struct control_change*)malloc(sizeof(struct control_change));
+  control_change->controller = next_byte(MIDI_file) & 0b01111111;
+  control_change->value = next_byte(MIDI_file) & 0b01111111;
+  return control_change;
 }

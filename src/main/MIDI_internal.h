@@ -73,3 +73,4 @@ struct control_change {
 };
 
 struct note_toggle* note_toggle_reader(struct MIDI_file* MIDI_file);
+struct control_change* control_change_reader(struct MIDI_file* MIDI_file);

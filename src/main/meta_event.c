@@ -55,6 +55,12 @@ struct event* meta_event_reader(struct MIDI_file* MIDI_file) {
       event->body = text_buffer_reader(MIDI_file, length);
       break;
 
+    case 0x20:
+      event->type = CHANNEL_PREFIX;
+      event->body = malloc(sizeof(uint8_t));
+      *(uint8_t*)event->body = next_byte(MIDI_file);
+      break;
+
     default:
       event = unimplemented_event_reader(MIDI_file);
   }

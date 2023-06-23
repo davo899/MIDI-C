@@ -40,20 +40,20 @@ struct event* MIDI_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code)
     case 0b1100:
       event->type = PROGRAM_CHANGE;
       MIDI_event->body = malloc(sizeof(uint8_t));
-      *((uint8_t*)MIDI_event->body) = next_byte(MIDI_file) & 0b01111111;
+      *(uint8_t*)MIDI_event->body = next_byte(MIDI_file) & 0b01111111;
       break;
 
     case 0b1101:
       event->type = CHANNEL_PRESSURE;
       MIDI_event->body = malloc(sizeof(uint8_t));
-      *((uint8_t*)MIDI_event->body) = next_byte(MIDI_file) & 0b01111111;
+      *(uint8_t*)MIDI_event->body = next_byte(MIDI_file) & 0b01111111;
       break;
 
     case 0b1110:
       event->type = PITCH_WHEEL_CHANGE;
       MIDI_event->body = malloc(sizeof(uint16_t));
       uint16_t least_significant_byte = next_byte(MIDI_file) & 0b01111111;
-      *((uint16_t*)MIDI_event->body) = ((next_byte(MIDI_file) & 0b01111111) << 7) | least_significant_byte;
+      *(uint16_t*)MIDI_event->body = ((next_byte(MIDI_file) & 0b01111111) << 7) | least_significant_byte;
       break;
 
     default:

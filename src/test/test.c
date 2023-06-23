@@ -6,12 +6,6 @@ enum colour {
   RESET, RED, GREEN, WHITE
 };
 
-struct test_group *test_groups[] = {
-  &MIDI_tests,
-  &MIDI_event_tests
-};
-int test_groups_length = sizeof(test_groups) / sizeof(struct test_group*);
-
 static void set_colour(enum colour colour) {
   switch (colour) {
     case RESET: printf("\033[0m");    break;
@@ -20,6 +14,12 @@ static void set_colour(enum colour colour) {
     case WHITE: printf("\033[0;37m"); break;
   };
 }
+
+struct test_group *test_groups[] = {
+  &MIDI_tests,
+  &MIDI_event_tests
+};
+int test_groups_length = sizeof(test_groups) / sizeof(struct test_group*);
 
 int main() {
   int fail_count = 0;

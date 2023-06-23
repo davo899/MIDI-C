@@ -182,4 +182,4 @@ static struct test tests[] = {
   { .name = "Reading invalid header returns NULL", .function = &invalid_header_returns_null },
 };
 
-struct test_group MIDI_tests = { .name = "MIDI", .tests = tests, .size = TEST_GROUP_SIZE(tests) };
+INIT_TEST_GROUP(MIDI);

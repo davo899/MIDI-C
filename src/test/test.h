@@ -6,7 +6,7 @@
 #define TEST_FAIL -1
 
 #define ASSERT(X) if (!(X)) return TEST_FAIL;
-#define TEST_GROUP_SIZE(X) (sizeof(X) / sizeof(struct test))
+#define INIT_TEST_GROUP(NAME) struct test_group NAME##_tests = { .name = #NAME, .tests = tests, .size = (sizeof(tests) / sizeof(struct test)) }
 
 struct test {
   char* name;

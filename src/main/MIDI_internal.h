@@ -75,18 +75,6 @@ struct control_change {
   int value;
 };
 
-struct program_change {
-  int program;
-};
-
-struct channel_pressure {
-  int pressure;
-};
-
-struct pitch_wheel_change {
-  uint16_t value;
-};
-
 struct text_buffer {
   int length;
   char* text;

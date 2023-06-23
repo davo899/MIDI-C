@@ -7,32 +7,6 @@ static struct note_toggle* note_toggle_reader(struct MIDI_file* MIDI_file) {
   return note_toggle;
 }
 
-static struct control_change* control_change_reader(struct MIDI_file* MIDI_file) {
-  struct control_change* control_change = (struct control_change*)malloc(sizeof(struct control_change));
-  control_change->controller = next_byte(MIDI_file) & 0b01111111;
-  control_change->value = next_byte(MIDI_file) & 0b01111111;
-  return control_change;
-}
-
-static struct program_change* program_change_reader(struct MIDI_file* MIDI_file) {
-  struct program_change* program_change = (struct program_change*)malloc(sizeof(struct program_change));
-  program_change->program = next_byte(MIDI_file) & 0b01111111;
-  return program_change;
-}
-
-static struct channel_pressure* channel_pressure_reader(struct MIDI_file* MIDI_file) {
-  struct channel_pressure* channel_pressure = (struct channel_pressure*)malloc(sizeof(struct channel_pressure));
-  channel_pressure->pressure = next_byte(MIDI_file) & 0b01111111;
-  return channel_pressure;
-}
-
-static struct pitch_wheel_change* pitch_wheel_change_reader(struct MIDI_file* MIDI_file) {
-  struct pitch_wheel_change* pitch_wheel_change = (struct pitch_wheel_change*)malloc(sizeof(struct pitch_wheel_change));
-  pitch_wheel_change->value = next_byte(MIDI_file) & 0b01111111;
-  pitch_wheel_change->value |= (next_byte(MIDI_file) & 0b01111111) << 7;
-  return pitch_wheel_change;
-}
-
 struct event* MIDI_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code) {
   struct event* event = (struct event*)malloc(sizeof(struct event));
   struct MIDI_event* MIDI_event = (struct MIDI_event*)malloc(sizeof(struct MIDI_event));
@@ -57,22 +31,29 @@ struct event* MIDI_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code)
 
     case 0b1011:
       event->type = CONTROL_CHANGE;
-      MIDI_event->body = control_change_reader(MIDI_file);
+      struct control_change* control_change = (struct control_change*)malloc(sizeof(struct control_change));
+      control_change->controller = next_byte(MIDI_file) & 0b01111111;
+      control_change->value = next_byte(MIDI_file) & 0b01111111;
+      MIDI_event->body = control_change;
       break;
 
     case 0b1100:
       event->type = PROGRAM_CHANGE;
-      MIDI_event->body = program_change_reader(MIDI_file);
+      MIDI_event->body = malloc(sizeof(uint8_t));
+      *((uint8_t*)MIDI_event->body) = next_byte(MIDI_file) & 0b01111111;
       break;
 
     case 0b1101:
       event->type = CHANNEL_PRESSURE;
-      MIDI_event->body = channel_pressure_reader(MIDI_file);
+      MIDI_event->body = malloc(sizeof(uint8_t));
+      *((uint8_t*)MIDI_event->body) = next_byte(MIDI_file) & 0b01111111;
       break;
 
     case 0b1110:
       event->type = PITCH_WHEEL_CHANGE;
-      MIDI_event->body = pitch_wheel_change_reader(MIDI_file);
+      MIDI_event->body = malloc(sizeof(uint16_t));
+      uint16_t least_significant_byte = next_byte(MIDI_file) & 0b01111111;
+      *((uint16_t*)MIDI_event->body) = ((next_byte(MIDI_file) & 0b01111111) << 7) | least_significant_byte;
       break;
 
     default:

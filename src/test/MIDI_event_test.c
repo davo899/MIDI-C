@@ -70,8 +70,7 @@ static int reads_program_change() {
   ASSERT(event->type == PROGRAM_CHANGE);
   struct MIDI_event* MIDI_event = (struct MIDI_event*)event->body;
   ASSERT(MIDI_event->channel == 0xA);
-  struct program_change* program_change = (struct program_change*)MIDI_event->body;
-  ASSERT(program_change->program == 0x7F);
+  ASSERT(*((uint8_t*)MIDI_event->body) == 0x7F);
   return TEST_PASS;
 }
 
@@ -84,8 +83,7 @@ static int reads_channel_pressure() {
   ASSERT(event->type == CHANNEL_PRESSURE);
   struct MIDI_event* MIDI_event = (struct MIDI_event*)event->body;
   ASSERT(MIDI_event->channel == 0xA);
-  struct channel_pressure* channel_pressure = (struct channel_pressure*)MIDI_event->body;
-  ASSERT(channel_pressure->pressure == 0x7F);
+  ASSERT(*((uint8_t*)MIDI_event->body) == 0x7F);
   return TEST_PASS;
 }
 
@@ -98,8 +96,7 @@ static int reads_pitch_wheel_change() {
   ASSERT(event->type == PITCH_WHEEL_CHANGE);
   struct MIDI_event* MIDI_event = (struct MIDI_event*)event->body;
   ASSERT(MIDI_event->channel == 0xA);
-  struct pitch_wheel_change* pitch_wheel_change = (struct pitch_wheel_change*)MIDI_event->body;
-  ASSERT(pitch_wheel_change->value == 0x3FFA);
+  ASSERT(*((uint16_t*)MIDI_event->body) == 0x3FFA);
   return TEST_PASS;
 }
 

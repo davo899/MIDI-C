@@ -40,6 +40,11 @@ struct event* meta_event_reader(struct MIDI_file* MIDI_file) {
       event->body = text_buffer_reader(MIDI_file, length);
       break;
 
+    case 0x05:
+      event->type = LYRIC;
+      event->body = text_buffer_reader(MIDI_file, length);
+      break;
+
     default:
       event = unimplemented_event_reader(MIDI_file);
   }

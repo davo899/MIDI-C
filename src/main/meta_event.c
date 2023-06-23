@@ -61,6 +61,10 @@ struct event* meta_event_reader(struct MIDI_file* MIDI_file) {
       *(uint8_t*)event->body = next_byte(MIDI_file);
       break;
 
+    case 0x2F:
+      event->type = END_OF_TRACK;
+      break;
+
     default:
       event = unimplemented_event_reader(MIDI_file);
   }

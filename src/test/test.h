@@ -7,6 +7,12 @@
 
 #define ASSERT(X) if (!(X)) return TEST_FAIL;
 #define INIT_TEST_GROUP(NAME) struct test_group NAME##_tests = { .name = #NAME, .tests = tests, .size = (sizeof(tests) / sizeof(struct test)) }
+#define INIT_MIDI_FILE(NAME) \
+  struct MIDI_file NAME = { \
+    .bytes = bytes,\
+    .index = 0,\
+    .length = sizeof(bytes) / sizeof(uint8_t)\
+  }
 
 struct test {
   char* name;

@@ -7,3 +7,7 @@
 
 #define ASSERT(X) if (!(X)) return TEST_FAIL;
 
+struct test {
+  char* name;
+  int (*function)();
+};

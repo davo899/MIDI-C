@@ -37,6 +37,11 @@ struct event* MIDI_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code)
       MIDI_event->body = channel_pressure_reader(MIDI_file);
       break;
 
+    case 0b1110:
+      event->type = PITCH_WHEEL_CHANGE;
+      MIDI_event->body = pitch_wheel_change_reader(MIDI_file);
+      break;
+
     default:
       event = unimplemented_event_reader(MIDI_file, event_code);
   }
@@ -68,4 +73,11 @@ struct channel_pressure* channel_pressure_reader(struct MIDI_file* MIDI_file) {
   struct channel_pressure* channel_pressure = (struct channel_pressure*)malloc(sizeof(struct channel_pressure));
   channel_pressure->pressure = next_byte(MIDI_file) & 0b01111111;
   return channel_pressure;
+}
+
+struct pitch_wheel_change* pitch_wheel_change_reader(struct MIDI_file* MIDI_file) {
+  struct pitch_wheel_change* pitch_wheel_change = (struct pitch_wheel_change*)malloc(sizeof(struct pitch_wheel_change));
+  pitch_wheel_change->value = next_byte(MIDI_file) & 0b01111111;
+  pitch_wheel_change->value |= (next_byte(MIDI_file) & 0b01111111) << 7;
+  return pitch_wheel_change;
 }

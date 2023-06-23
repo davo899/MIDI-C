@@ -89,6 +89,20 @@ static int reads_channel_pressure() {
   return TEST_PASS;
 }
 
+static int reads_pitch_wheel_change() {
+  uint8_t bytes[] = { 0x03, 0xEA, 0x7A, 0x7F };
+  INIT_MIDI_FILE(MIDI_file);
+  struct event* event = next_track_event(&MIDI_file);
+  ASSERT(event != NULL);
+  ASSERT(event->deltatime == 0x03);
+  ASSERT(event->type == PITCH_WHEEL_CHANGE);
+  struct MIDI_event* MIDI_event = (struct MIDI_event*)event->body;
+  ASSERT(MIDI_event->channel == 0xA);
+  struct pitch_wheel_change* pitch_wheel_change = (struct pitch_wheel_change*)MIDI_event->body;
+  ASSERT(pitch_wheel_change->value == 0x3FFA);
+  return TEST_PASS;
+}
+
 static struct test tests[] = {
   { .name = "Reads note off event", .function = &reads_note_off },
   { .name = "Reads note on event", .function = &reads_note_on },
@@ -96,6 +110,7 @@ static struct test tests[] = {
   { .name = "Reads control change event", .function = &reads_control_change },
   { .name = "Reads program change event", .function = &reads_program_change },
   { .name = "Reads channel pressure event", .function = &reads_channel_pressure },
+  { .name = "Reads pitch wheel change event", .function = &reads_pitch_wheel_change },
 };
 
 INIT_TEST_GROUP(MIDI_event);

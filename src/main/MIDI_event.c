@@ -27,6 +27,11 @@ struct event* MIDI_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code)
       MIDI_event->body = control_change_reader(MIDI_file);
       break;
 
+    case 0b1100:
+      event->type = PROGRAM_CHANGE;
+      MIDI_event->body = program_change_reader(MIDI_file);
+      break;
+
     default:
       event = unimplemented_event_reader(MIDI_file, event_code);
   }
@@ -46,4 +51,10 @@ struct control_change* control_change_reader(struct MIDI_file* MIDI_file) {
   control_change->controller = next_byte(MIDI_file) & 0b01111111;
   control_change->value = next_byte(MIDI_file) & 0b01111111;
   return control_change;
+}
+
+struct program_change* program_change_reader(struct MIDI_file* MIDI_file) {
+  struct program_change* program_change = (struct program_change*)malloc(sizeof(struct program_change));
+  program_change->program = next_byte(MIDI_file) & 0b01111111;
+  return program_change;
 }

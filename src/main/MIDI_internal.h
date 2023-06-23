@@ -52,7 +52,7 @@ struct event {
 };
 
 struct event* next_track_event(struct MIDI_file* MIDI_file);
-struct event* unimplemented_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code);
+struct event* unimplemented_event_reader(struct MIDI_file* MIDI_file);
 struct event* system_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code);
 struct event* MIDI_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code);
 struct event* meta_event_reader(struct MIDI_file* MIDI_file);

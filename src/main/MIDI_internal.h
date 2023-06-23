@@ -67,4 +67,9 @@ struct note_toggle {
   int velocity;
 };
 
+struct control_change {
+  int controller;
+  int value;
+};
+
 struct note_toggle* note_toggle_reader(struct MIDI_file* MIDI_file);

@@ -76,6 +76,11 @@ struct program_change {
   int program;
 };
 
+struct channel_pressure {
+  int pressure;
+};
+
 struct note_toggle* note_toggle_reader(struct MIDI_file* MIDI_file);
 struct control_change* control_change_reader(struct MIDI_file* MIDI_file);
 struct program_change* program_change_reader(struct MIDI_file* MIDI_file);
+struct channel_pressure* channel_pressure_reader(struct MIDI_file* MIDI_file);

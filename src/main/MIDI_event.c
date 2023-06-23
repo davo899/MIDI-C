@@ -32,6 +32,11 @@ struct event* MIDI_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code)
       MIDI_event->body = program_change_reader(MIDI_file);
       break;
 
+    case 0b1101:
+      event->type = CHANNEL_PRESSURE;
+      MIDI_event->body = channel_pressure_reader(MIDI_file);
+      break;
+
     default:
       event = unimplemented_event_reader(MIDI_file, event_code);
   }
@@ -57,4 +62,10 @@ struct program_change* program_change_reader(struct MIDI_file* MIDI_file) {
   struct program_change* program_change = (struct program_change*)malloc(sizeof(struct program_change));
   program_change->program = next_byte(MIDI_file) & 0b01111111;
   return program_change;
+}
+
+struct channel_pressure* channel_pressure_reader(struct MIDI_file* MIDI_file) {
+  struct channel_pressure* channel_pressure = (struct channel_pressure*)malloc(sizeof(struct channel_pressure));
+  channel_pressure->pressure = next_byte(MIDI_file) & 0b01111111;
+  return channel_pressure;
 }

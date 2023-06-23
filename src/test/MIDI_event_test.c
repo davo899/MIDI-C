@@ -75,12 +75,27 @@ static int reads_program_change() {
   return TEST_PASS;
 }
 
+static int reads_channel_pressure() {
+  uint8_t bytes[] = { 0x03, 0xDA, 0x7F };
+  INIT_MIDI_FILE(MIDI_file);
+  struct event* event = next_track_event(&MIDI_file);
+  ASSERT(event != NULL);
+  ASSERT(event->deltatime == 0x03);
+  ASSERT(event->type == CHANNEL_PRESSURE);
+  struct MIDI_event* MIDI_event = (struct MIDI_event*)event->body;
+  ASSERT(MIDI_event->channel == 0xA);
+  struct channel_pressure* channel_pressure = (struct channel_pressure*)MIDI_event->body;
+  ASSERT(channel_pressure->pressure == 0x7F);
+  return TEST_PASS;
+}
+
 static struct test tests[] = {
   { .name = "Reads note off event", .function = &reads_note_off },
   { .name = "Reads note on event", .function = &reads_note_on },
   { .name = "Reads polyphonic key pressure event", .function = &reads_polyphonic_key_pressure },
   { .name = "Reads control change event", .function = &reads_control_change },
   { .name = "Reads program change event", .function = &reads_program_change },
+  { .name = "Reads channel pressure event", .function = &reads_channel_pressure },
 };
 
 INIT_TEST_GROUP(MIDI_event);

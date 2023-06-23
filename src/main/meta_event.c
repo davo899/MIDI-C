@@ -50,6 +50,11 @@ struct event* meta_event_reader(struct MIDI_file* MIDI_file) {
       event->body = text_buffer_reader(MIDI_file, length);
       break;
 
+    case 0x07:
+      event->type = CUE_POINT;
+      event->body = text_buffer_reader(MIDI_file, length);
+      break;
+
     default:
       event = unimplemented_event_reader(MIDI_file);
   }

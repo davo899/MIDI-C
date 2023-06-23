@@ -42,10 +42,10 @@ enum event_type {
   ACTIVE_SENSING, RESET,
 
   // Meta Events
-  SEQUENCE_NUMBER, TEXT_EVENT, COPYRIGHT_NOTICE, TRACK_NAME,
+  SEQUENCE_NUMBER, TEXT, COPYRIGHT_NOTICE, TRACK_NAME,
   INSTRUMENT_NAME, LYRIC, MARKER, CUE_POINT, CHANNEL_PREFIX,
   END_OF_TRACK, SET_TEMPO, SMPTE_OFFSET, TIME_SIGNATURE,
-  KEY_SIGNATURE, SEQUENCER_SPECIFIC_META_EVENT
+  KEY_SIGNATURE, SEQUENCER_SPECIFIC_META
 };
 
 struct event {
@@ -85,6 +85,11 @@ struct channel_pressure {
 
 struct pitch_wheel_change {
   uint16_t value;
+};
+
+struct text_buffer {
+  int length;
+  char* text;
 };
 
 struct note_toggle* note_toggle_reader(struct MIDI_file* MIDI_file);

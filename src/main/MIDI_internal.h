@@ -95,3 +95,8 @@ struct time_signature {
   int clocks;
   int notes_per_quarter;
 };
+
+struct key_signature {
+  int flats;
+  int scale;
+};

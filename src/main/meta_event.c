@@ -96,6 +96,14 @@ struct event* meta_event_reader(struct MIDI_file* MIDI_file) {
       event->body = time_signature;
       break;
 
+    case 0x59:
+      event->type = KEY_SIGNATURE;
+      struct key_signature* key_signature = (struct key_signature*)malloc(sizeof(struct key_signature));
+      key_signature->flats = next_byte(MIDI_file);
+      key_signature->scale = next_byte(MIDI_file);
+      event->body = key_signature;
+      break;
+
     default:
       event = unimplemented_event_reader(MIDI_file);
   }

@@ -174,6 +174,19 @@ static int reads_time_signature() {
   return TEST_PASS;
 }
 
+static int reads_key_signature() {
+  uint8_t bytes[] = { 0x7C, 0xFF, 0x59, 0x02, 0x07, 0x01 };
+  INIT_MIDI_FILE(MIDI_file);
+  struct event* event = next_track_event(&MIDI_file);
+  ASSERT(event != NULL);
+  ASSERT(event->deltatime == 0x7C);
+  ASSERT(event->type == KEY_SIGNATURE);
+  struct key_signature* key_signature = (struct key_signature*)event->body;
+  ASSERT(key_signature->flats == 0x07);
+  ASSERT(key_signature->scale == 0x01);
+  return TEST_PASS;
+}
+
 static struct test tests[] = {
   { .name = "Reads sequence number event", .function = &reads_sequence_number },
   { .name = "Reads text event", .function = &reads_text },
@@ -188,6 +201,7 @@ static struct test tests[] = {
   { .name = "Reads set tempo event", .function = &reads_set_tempo },
   { .name = "Reads SMPTE offset event", .function = &reads_SMPTE_offset },
   { .name = "Reads time signature event", .function = &reads_time_signature },
+  { .name = "Reads key signature event", .function = &reads_key_signature },
 };
 
 INIT_TEST_GROUP(meta_event);

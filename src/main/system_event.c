@@ -22,6 +22,12 @@ struct event* system_event_reader(struct MIDI_file* MIDI_file, uint8_t event_cod
       *(uint16_t*)event->body = ((next_byte(MIDI_file) & 0b01111111) << 7) | (least_significant_byte & 0b01111111);
       break;
 
+    case 0xF3:
+      event->type = SONG_SELECT;
+      event->body = malloc(sizeof(uint8_t));
+      *(uint8_t*)event->body = next_byte(MIDI_file) & 0b01111111;
+      break;
+
     default:
       free(event);
       event = unimplemented_event_reader(MIDI_file);

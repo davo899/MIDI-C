@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MIDI.h"
+#include "../../MIDI.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>

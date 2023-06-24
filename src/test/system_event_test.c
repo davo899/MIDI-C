@@ -48,11 +48,66 @@ static int reads_tune_request() {
   return TEST_PASS;
 }
 
+static int reads_timing_clock() {
+  uint8_t bytes[] = { 0x7C, 0xF8 };
+  INIT_MIDI_FILE(MIDI_file);
+  struct event* event = next_track_event(&MIDI_file);
+  ASSERT(event != NULL);
+  ASSERT(event->deltatime == 0x7C);
+  ASSERT(event->type == TIMING_CLOCK);
+  return TEST_PASS;
+}
+
+static int reads_start() {
+  uint8_t bytes[] = { 0x7C, 0xFA };
+  INIT_MIDI_FILE(MIDI_file);
+  struct event* event = next_track_event(&MIDI_file);
+  ASSERT(event != NULL);
+  ASSERT(event->deltatime == 0x7C);
+  ASSERT(event->type == START);
+  return TEST_PASS;
+}
+
+static int reads_continue() {
+  uint8_t bytes[] = { 0x7C, 0xFB };
+  INIT_MIDI_FILE(MIDI_file);
+  struct event* event = next_track_event(&MIDI_file);
+  ASSERT(event != NULL);
+  ASSERT(event->deltatime == 0x7C);
+  ASSERT(event->type == CONTINUE);
+  return TEST_PASS;
+}
+
+static int reads_stop() {
+  uint8_t bytes[] = { 0x7C, 0xFC };
+  INIT_MIDI_FILE(MIDI_file);
+  struct event* event = next_track_event(&MIDI_file);
+  ASSERT(event != NULL);
+  ASSERT(event->deltatime == 0x7C);
+  ASSERT(event->type == STOP);
+  return TEST_PASS;
+}
+
+static int reads_active_sensing() {
+  uint8_t bytes[] = { 0x7C, 0xFE };
+  INIT_MIDI_FILE(MIDI_file);
+  struct event* event = next_track_event(&MIDI_file);
+  ASSERT(event != NULL);
+  ASSERT(event->deltatime == 0x7C);
+  ASSERT(event->type == ACTIVE_SENSING);
+  return TEST_PASS;
+}
+
 static struct test tests[] = {
   { .name = "Reads system exclusive event", .function = &reads_system_exclusive },
   { .name = "Reads song position pointer event", .function = &reads_song_position_pointer },
   { .name = "Reads song select event", .function = &reads_song_select },
   { .name = "Reads tune request event", .function = &reads_tune_request },
+  { .name = "Reads timing clock event", .function = &reads_timing_clock },
+  { .name = "Reads start event", .function = &reads_start },
+  { .name = "Reads continue event", .function = &reads_continue },
+  { .name = "Reads stop event", .function = &reads_stop },
+  { .name = "Reads active sensing event", .function = &reads_active_sensing },
 };
 
 INIT_TEST_GROUP(system_event);

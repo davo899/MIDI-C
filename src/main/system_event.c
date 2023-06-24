@@ -32,6 +32,26 @@ struct event* system_event_reader(struct MIDI_file* MIDI_file, uint8_t event_cod
       event->type = TUNE_REQUEST;
       break;
 
+    case 0xF8:
+      event->type = TIMING_CLOCK;
+      break;
+
+    case 0xFA:
+      event->type = START;
+      break;
+
+    case 0xFB:
+      event->type = CONTINUE;
+      break;
+
+    case 0xFC:
+      event->type = STOP;
+      break;
+
+    case 0xFE:
+      event->type = ACTIVE_SENSING;
+      break;
+
     default:
       free(event);
       event = unimplemented_event_reader(MIDI_file);

@@ -187,6 +187,20 @@ static int reads_key_signature() {
   return TEST_PASS;
 }
 
+static int reads_sequencer_specific_meta() {
+  uint8_t bytes[] = { 0x7C, 0xFF, 0x01, 0x02, 0x68, 0x69 };
+  INIT_MIDI_FILE(MIDI_file);
+  struct event* event = next_track_event(&MIDI_file);
+  ASSERT(event != NULL);
+  ASSERT(event->deltatime == 0x7C);
+  ASSERT(event->type == TEXT);
+  struct byte_buffer* byte_buffer = (struct byte_buffer*)event->body;
+  ASSERT(byte_buffer->length == 2);
+  ASSERT(byte_buffer->bytes[0] == 0x68);
+  ASSERT(byte_buffer->bytes[1] == 0x69);
+  return TEST_PASS;
+}
+
 static struct test tests[] = {
   { .name = "Reads sequence number event", .function = &reads_sequence_number },
   { .name = "Reads text event", .function = &reads_text },
@@ -202,6 +216,7 @@ static struct test tests[] = {
   { .name = "Reads SMPTE offset event", .function = &reads_SMPTE_offset },
   { .name = "Reads time signature event", .function = &reads_time_signature },
   { .name = "Reads key signature event", .function = &reads_key_signature },
+  { .name = "Reads sequencer specific meta event", .function = &reads_sequencer_specific_meta },
 };
 
 INIT_TEST_GROUP(meta_event);

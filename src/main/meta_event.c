@@ -104,6 +104,11 @@ struct event* meta_event_reader(struct MIDI_file* MIDI_file) {
       event->body = key_signature;
       break;
 
+    case 0x7F:
+      event->type = SEQUENCER_SPECIFIC_META;
+      event->body = byte_buffer_reader(MIDI_file, length);
+      break;
+
     default:
       event = unimplemented_event_reader(MIDI_file);
   }

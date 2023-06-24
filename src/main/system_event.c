@@ -15,6 +15,13 @@ struct event* system_event_reader(struct MIDI_file* MIDI_file, uint8_t event_cod
       event->body = system_exclusive_message;
       break;
 
+    case 0xF2:
+      event->type = SONG_POSITION_POINTER;
+      uint16_t least_significant_byte = next_byte(MIDI_file);
+      event->body = malloc(sizeof(uint16_t));
+      *(uint16_t*)event->body = ((next_byte(MIDI_file) & 0b01111111) << 7) | (least_significant_byte & 0b01111111);
+      break;
+
     default:
       free(event);
       event = unimplemented_event_reader(MIDI_file);

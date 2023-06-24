@@ -131,6 +131,17 @@ static int reads_end_of_track() {
   return TEST_PASS;
 }
 
+static int reads_set_tempo() {
+  uint8_t bytes[] = { 0x7C, 0xFF, 0x51, 0x03, 0x98, 0x76, 0x54 };
+  INIT_MIDI_FILE(MIDI_file);
+  struct event* event = next_track_event(&MIDI_file);
+  ASSERT(event != NULL);
+  ASSERT(event->deltatime == 0x7C);
+  ASSERT(event->type == SET_TEMPO);
+  ASSERT(*(uint64_t*)event->body == 0x987654);
+  return TEST_PASS;
+}
+
 static struct test tests[] = {
   { .name = "Reads sequence number event", .function = &reads_sequence_number },
   { .name = "Reads text event", .function = &reads_text },
@@ -142,6 +153,7 @@ static struct test tests[] = {
   { .name = "Reads cue point event", .function = &reads_cue_point },
   { .name = "Reads channel prefix event", .function = &reads_channel_prefix },
   { .name = "Reads end of track event", .function = &reads_end_of_track },
+  { .name = "Reads set tempo event", .function = &reads_set_tempo },
 };
 
 INIT_TEST_GROUP(meta_event);

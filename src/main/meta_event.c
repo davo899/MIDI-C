@@ -65,6 +65,14 @@ struct event* meta_event_reader(struct MIDI_file* MIDI_file) {
       event->type = END_OF_TRACK;
       break;
 
+    case 0x51:
+      event->type = SET_TEMPO;
+      event->body = malloc(sizeof(uint64_t));
+      uint64_t byte1 = next_byte(MIDI_file);
+      uint64_t byte2 = next_byte(MIDI_file);
+      *(uint64_t*)event->body = (byte1 << 16) | (byte2 << 8) | next_byte(MIDI_file);
+      break;
+
     default:
       event = unimplemented_event_reader(MIDI_file);
   }

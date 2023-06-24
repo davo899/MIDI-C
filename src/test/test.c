@@ -34,6 +34,7 @@ int main() {
       struct test test = test_groups[i]->tests[j];
 
       printf("\t%s: ", test.name);
+      fflush(stdout);
       if (test.function() == TEST_PASS) {
         set_colour(GREEN);
         printf("passed");

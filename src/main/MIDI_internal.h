@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stddef.h>
 
 #define SINGLE_TRACK 0
 #define MULTI_TRACK_SIMULTANEOUS 1
@@ -106,3 +107,10 @@ struct system_exclusive_message {
   int length;
   uint8_t* message;
 };
+
+struct MIDI_track {
+  int length;
+  struct event** events;
+};
+
+struct MIDI_track* next_MIDI_track(struct MIDI_file* MIDI_file);

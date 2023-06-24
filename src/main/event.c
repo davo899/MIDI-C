@@ -1,5 +1,4 @@
 #include "MIDI_internal.h"
-#include <stdio.h>
 
 struct event* next_track_event(struct MIDI_file* MIDI_file) {
   uint32_t deltatime = next_variable_length_quantity(MIDI_file);

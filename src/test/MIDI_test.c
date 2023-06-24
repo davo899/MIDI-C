@@ -28,66 +28,42 @@ static int can_read_MIDI_file() {
 
 static int can_read_VLQ_zero() {
   uint8_t bytes[] = { 0x00 };
-  struct MIDI_file MIDI_file = {
-    .bytes = bytes,
-    .index = 0,
-    .length = 1
-  };
+  INIT_MIDI_FILE(MIDI_file);
   ASSERT(next_variable_length_quantity(&MIDI_file) == 0 && MIDI_file.index == 1);
   return TEST_PASS;
 }
 
 static int can_read_VLQ_single() {
   uint8_t bytes[] = { 0x7B };
-  struct MIDI_file MIDI_file = {
-    .bytes = bytes,
-    .index = 0,
-    .length = 1
-  };
+  INIT_MIDI_FILE(MIDI_file);
   ASSERT(next_variable_length_quantity(&MIDI_file) == 0x7B && MIDI_file.index == 1);
   return TEST_PASS;
 }
 
 static int can_read_VLQ_full() {
   uint8_t bytes[] = { 0xFF, 0xFF, 0xFF, 0x7F };
-  struct MIDI_file MIDI_file = {
-    .bytes = bytes,
-    .index = 0,
-    .length = 4
-  };
+  INIT_MIDI_FILE(MIDI_file);
   ASSERT(next_variable_length_quantity(&MIDI_file) == 0xFFFFFFF && MIDI_file.index == 4);
   return TEST_PASS;
 }
 
 static int matching_chunk_type_returns_true() {
   uint8_t bytes[] = { 0x4D, 0x54, 0x68, 0x64 };
-  struct MIDI_file MIDI_file = {
-    .bytes = bytes,
-    .index = 0,
-    .length = 4
-  };
+  INIT_MIDI_FILE(MIDI_file);
   ASSERT(match_chunk_type(&MIDI_file, "MThd"));
   return TEST_PASS;
 }
 
 static int non_matching_chunk_type_returns_false() {
   uint8_t bytes[] = { 0x4D, 0x54, 0x68, 0x64 };
-  struct MIDI_file MIDI_file = {
-    .bytes = bytes,
-    .index = 0,
-    .length = 4
-  };
+  INIT_MIDI_FILE(MIDI_file);
   ASSERT(!match_chunk_type(&MIDI_file, "MTrk"));
   return TEST_PASS;
 }
 
 static int next_byte_advances_index() {
   uint8_t bytes[] = { 0x4D, 0x54, 0x68, 0x64 };
-  struct MIDI_file MIDI_file = {
-    .bytes = bytes,
-    .index = 0,
-    .length = 4
-  };
+  INIT_MIDI_FILE(MIDI_file);
   next_byte(&MIDI_file);
   ASSERT(MIDI_file.index == 1);
   return TEST_PASS;
@@ -130,11 +106,7 @@ static int invalid_header_returns_null() {
     0x00, 0x10,
     0x80, 0x02
   };
-  struct MIDI_file MIDI_file2 = {
-    .bytes = bytes,
-    .index = 0,
-    .length = 14
-  };
+  INIT_MIDI_FILE(MIDI_file2);
   ASSERT(next_MIDI_header(&MIDI_file2) == NULL);
 
   return TEST_PASS;
@@ -148,16 +120,42 @@ static int can_read_header() {
     0x00, 0x10,
     0x80, 0x02
   };
-  struct MIDI_file MIDI_file = {
-    .bytes = bytes,
-    .index = 0,
-    .length = 14
-  };
+  INIT_MIDI_FILE(MIDI_file);
   struct MIDI_header* MIDI_header = next_MIDI_header(&MIDI_file);
   ASSERT(MIDI_header != NULL);
   ASSERT(MIDI_header->format == MULTI_TRACK_INDEPENDENT);
   ASSERT(MIDI_header->tracks == 0x10);
   ASSERT(MIDI_header->division == 0x8002);
+  return TEST_PASS;
+}
+
+static int can_read_track() {
+  uint8_t bytes[] = {
+    0x4D, 0x54, 0x72, 0x6B, // MTrk
+    0x00, 0x00, 0x00, 0x0C, // Length
+    0x68, 0x9A, 0x7F, 0x6B, // Note on
+    0x12, 0x8A, 0x7F, 0x19, // Note off
+    0x5B, 0xFF, 0x2F, 0x00  // Track end
+  };
+  INIT_MIDI_FILE(MIDI_file);
+  struct MIDI_track* MIDI_track = next_MIDI_track(&MIDI_file);
+  ASSERT(MIDI_track != NULL);
+  ASSERT(MIDI_track->length == 3);
+
+  ASSERT(MIDI_track->events[0]->deltatime == 0x68);
+  ASSERT(MIDI_track->events[0]->type == NOTE_ON);
+  ASSERT(((struct MIDI_event*)MIDI_track->events[0]->body)->channel == 0xA);
+  ASSERT(((struct note_toggle*)((struct MIDI_event*)MIDI_track->events[0]->body)->body)->key == 0x7F);
+  ASSERT(((struct note_toggle*)((struct MIDI_event*)MIDI_track->events[0]->body)->body)->velocity == 0x6B);
+
+  ASSERT(MIDI_track->events[1]->deltatime == 0x12);
+  ASSERT(MIDI_track->events[1]->type == NOTE_OFF);
+  ASSERT(((struct MIDI_event*)MIDI_track->events[0]->body)->channel == 0xA);
+  ASSERT(((struct note_toggle*)((struct MIDI_event*)MIDI_track->events[1]->body)->body)->key == 0x7F);
+  ASSERT(((struct note_toggle*)((struct MIDI_event*)MIDI_track->events[1]->body)->body)->velocity == 0x19);
+
+  ASSERT(MIDI_track->events[2]->deltatime == 0x5B);
+  ASSERT(MIDI_track->events[2]->type == END_OF_TRACK);
   return TEST_PASS;
 }
 
@@ -180,6 +178,8 @@ static struct test tests[] = {
 
   { .name = "Can read header", .function = &can_read_header },
   { .name = "Reading invalid header returns NULL", .function = &invalid_header_returns_null },
+
+  { .name = "Can read track", .function = &can_read_track },
 };
 
 INIT_TEST_GROUP(MIDI);

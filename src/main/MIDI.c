@@ -1,6 +1,4 @@
 #include "MIDI_internal.h"
-#include <stddef.h>
-#include <stdio.h>
 
 uint8_t* read_file_to_byte_array(char* filename, int* length) {
   FILE *fileptr = fopen(filename, "rb");
@@ -69,4 +67,27 @@ struct MIDI_header* next_MIDI_header(struct MIDI_file* MIDI_file) {
   MIDI_header->division = next_half_word(MIDI_file);
 
   return MIDI_header;
+}
+
+struct MIDI_track* next_MIDI_track(struct MIDI_file* MIDI_file) {
+  if (!match_chunk_type(MIDI_file, "MTrk")) return NULL;
+  int chunk_length = next_full_word(MIDI_file);
+  int chunk_end = MIDI_file->index + chunk_length;
+
+  int block_size = 8;
+  struct event** events = (struct event**)malloc(block_size * sizeof(struct event*));
+  int length = 0;
+
+  while (MIDI_file->index < chunk_end) {
+    if (length >= block_size) {
+      block_size *= 2;
+      events = (struct event**)realloc(events, block_size * sizeof(struct event*));
+    }
+    events[length++] = next_track_event(MIDI_file);
+  }
+
+  struct MIDI_track* MIDI_track = (struct MIDI_track*)malloc(sizeof(struct MIDI_track));
+  MIDI_track->length = length;
+  MIDI_track->events = events;
+  return MIDI_track;
 }

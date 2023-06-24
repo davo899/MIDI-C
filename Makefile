@@ -18,5 +18,6 @@ $(OBJ_DIR)/%.o: src/%.c $(DEPS) dirs
 .PHONY: clean
 
 clean:
-	rm -f $(OBJ_DIR)/*.o
-	rm test
+	rm -f $(OBJ_DIR)/main/*.o
+	rm -f $(OBJ_DIR)/test/*.o
+	rm -f test

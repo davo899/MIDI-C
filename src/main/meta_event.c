@@ -86,6 +86,16 @@ struct event* meta_event_reader(struct MIDI_file* MIDI_file) {
       event->body = SMPTE_offset;
       break;
 
+    case 0x58:
+      event->type = TIME_SIGNATURE;
+      struct time_signature* time_signature = (struct time_signature*)malloc(sizeof(struct time_signature));
+      time_signature->numerator = next_byte(MIDI_file);
+      time_signature->denominator = next_byte(MIDI_file);
+      time_signature->clocks = next_byte(MIDI_file);
+      time_signature->notes_per_quarter = next_byte(MIDI_file);
+      event->body = time_signature;
+      break;
+
     default:
       event = unimplemented_event_reader(MIDI_file);
   }

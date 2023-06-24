@@ -159,6 +159,21 @@ static int reads_SMPTE_offset() {
   return TEST_PASS;
 }
 
+static int reads_time_signature() {
+  uint8_t bytes[] = { 0x7C, 0xFF, 0x58, 0x04, 0x06, 0x03, 0x24, 0x08 };
+  INIT_MIDI_FILE(MIDI_file);
+  struct event* event = next_track_event(&MIDI_file);
+  ASSERT(event != NULL);
+  ASSERT(event->deltatime == 0x7C);
+  ASSERT(event->type == TIME_SIGNATURE);
+  struct time_signature* time_signature = (struct time_signature*)event->body;
+  ASSERT(time_signature->numerator == 0x06);
+  ASSERT(time_signature->denominator == 0x03);
+  ASSERT(time_signature->clocks == 0x24);
+  ASSERT(time_signature->notes_per_quarter == 0x08);
+  return TEST_PASS;
+}
+
 static struct test tests[] = {
   { .name = "Reads sequence number event", .function = &reads_sequence_number },
   { .name = "Reads text event", .function = &reads_text },
@@ -172,6 +187,7 @@ static struct test tests[] = {
   { .name = "Reads end of track event", .function = &reads_end_of_track },
   { .name = "Reads set tempo event", .function = &reads_set_tempo },
   { .name = "Reads SMPTE offset event", .function = &reads_SMPTE_offset },
+  { .name = "Reads time signature event", .function = &reads_time_signature },
 };
 
 INIT_TEST_GROUP(meta_event);

@@ -88,3 +88,10 @@ struct SMPTE_offset {
   int frames;
   int subframes;
 };
+
+struct time_signature {
+  int numerator;
+  int denominator;
+  int clocks;
+  int notes_per_quarter;
+};

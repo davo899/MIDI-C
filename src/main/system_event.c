@@ -28,6 +28,10 @@ struct event* system_event_reader(struct MIDI_file* MIDI_file, uint8_t event_cod
       *(uint8_t*)event->body = next_byte(MIDI_file) & 0b01111111;
       break;
 
+    case 0xF6:
+      event->type = TUNE_REQUEST;
+      break;
+
     default:
       free(event);
       event = unimplemented_event_reader(MIDI_file);

@@ -38,10 +38,21 @@ static int reads_song_select() {
   return TEST_PASS;
 }
 
+static int reads_tune_request() {
+  uint8_t bytes[] = { 0x7C, 0xF6 };
+  INIT_MIDI_FILE(MIDI_file);
+  struct event* event = next_track_event(&MIDI_file);
+  ASSERT(event != NULL);
+  ASSERT(event->deltatime == 0x7C);
+  ASSERT(event->type == TUNE_REQUEST);
+  return TEST_PASS;
+}
+
 static struct test tests[] = {
   { .name = "Reads system exclusive event", .function = &reads_system_exclusive },
   { .name = "Reads song position pointer event", .function = &reads_song_position_pointer },
   { .name = "Reads song select event", .function = &reads_song_select },
+  { .name = "Reads tune request event", .function = &reads_tune_request },
 };
 
 INIT_TEST_GROUP(system_event);

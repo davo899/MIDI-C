@@ -110,6 +110,7 @@ struct event* meta_event_reader(struct MIDI_file* MIDI_file) {
       break;
 
     default:
+      free(event);
       event = unimplemented_event_reader(MIDI_file);
   }
 

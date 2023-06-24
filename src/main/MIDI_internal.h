@@ -100,3 +100,9 @@ struct key_signature {
   int flats;
   int scale;
 };
+
+struct system_exclusive_message {
+  int id;
+  int length;
+  uint8_t* message;
+};

@@ -18,7 +18,8 @@ static void set_colour(enum colour colour) {
 struct test_group *test_groups[] = {
   &MIDI_tests,
   &MIDI_event_tests,
-  &meta_event_tests
+  &meta_event_tests,
+  &system_event_tests
 };
 int test_groups_length = sizeof(test_groups) / sizeof(struct test_group*);
 

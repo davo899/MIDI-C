@@ -142,6 +142,23 @@ static int reads_set_tempo() {
   return TEST_PASS;
 }
 
+static int reads_SMPTE_offset() {
+  uint8_t bytes[] = { 0x7C, 0xFF, 0x54, 0x05, 0x7F, 0xAF, 0xEE, 0x3D, 0xCC };
+  INIT_MIDI_FILE(MIDI_file);
+  struct event* event = next_track_event(&MIDI_file);
+  ASSERT(event != NULL);
+  ASSERT(event->deltatime == 0x7C);
+  ASSERT(event->type == SMPTE_OFFSET);
+  struct SMPTE_offset* SMPTE_offset = (struct SMPTE_offset*)event->body;
+  ASSERT(SMPTE_offset->frame_rate == 0x3);
+  ASSERT(SMPTE_offset->hours == 0x1F);
+  ASSERT(SMPTE_offset->minutes == 0xAF);
+  ASSERT(SMPTE_offset->seconds == 0xEE);
+  ASSERT(SMPTE_offset->frames == 0x3D);
+  ASSERT(SMPTE_offset->subframes == 0xCC);
+  return TEST_PASS;
+}
+
 static struct test tests[] = {
   { .name = "Reads sequence number event", .function = &reads_sequence_number },
   { .name = "Reads text event", .function = &reads_text },
@@ -154,6 +171,7 @@ static struct test tests[] = {
   { .name = "Reads channel prefix event", .function = &reads_channel_prefix },
   { .name = "Reads end of track event", .function = &reads_end_of_track },
   { .name = "Reads set tempo event", .function = &reads_set_tempo },
+  { .name = "Reads SMPTE offset event", .function = &reads_SMPTE_offset },
 };
 
 INIT_TEST_GROUP(meta_event);

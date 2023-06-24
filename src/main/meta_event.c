@@ -73,6 +73,19 @@ struct event* meta_event_reader(struct MIDI_file* MIDI_file) {
       *(uint64_t*)event->body = (byte1 << 16) | (byte2 << 8) | next_byte(MIDI_file);
       break;
 
+    case 0x54:
+      event->type = SMPTE_OFFSET;
+      struct SMPTE_offset* SMPTE_offset = (struct SMPTE_offset*)malloc(sizeof(struct SMPTE_offset));
+      uint8_t byte = next_byte(MIDI_file);
+      SMPTE_offset->frame_rate = byte >> 5;
+      SMPTE_offset->hours = byte & 0b00011111;
+      SMPTE_offset->minutes = next_byte(MIDI_file);
+      SMPTE_offset->seconds = next_byte(MIDI_file);
+      SMPTE_offset->frames = next_byte(MIDI_file);
+      SMPTE_offset->subframes = next_byte(MIDI_file);
+      event->body = SMPTE_offset;
+      break;
+
     default:
       event = unimplemented_event_reader(MIDI_file);
   }

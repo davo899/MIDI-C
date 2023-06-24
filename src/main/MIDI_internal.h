@@ -79,3 +79,12 @@ struct text_buffer {
   int length;
   char* text;
 };
+
+struct SMPTE_offset {
+  int frame_rate;
+  int hours;
+  int minutes;
+  int seconds;
+  int frames;
+  int subframes;
+};

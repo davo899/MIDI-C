@@ -75,9 +75,9 @@ struct control_change {
   int value;
 };
 
-struct text_buffer {
+struct byte_buffer {
   int length;
-  char* text;
+  uint8_t* bytes;
 };
 
 struct SMPTE_offset {

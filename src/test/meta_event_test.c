@@ -19,10 +19,10 @@ static int reads_text() {
   ASSERT(event != NULL);
   ASSERT(event->deltatime == 0x7C);
   ASSERT(event->type == TEXT);
-  struct text_buffer* text_buffer = (struct text_buffer*)event->body;
-  ASSERT(text_buffer->length == 2);
-  ASSERT(text_buffer->text[0] == 'h');
-  ASSERT(text_buffer->text[1] == 'i');
+  struct byte_buffer* byte_buffer = (struct byte_buffer*)event->body;
+  ASSERT(byte_buffer->length == 2);
+  ASSERT((char)byte_buffer->bytes[0] == 'h');
+  ASSERT((char)byte_buffer->bytes[1] == 'i');
   return TEST_PASS;
 }
 
@@ -33,10 +33,10 @@ static int reads_copyright_notice() {
   ASSERT(event != NULL);
   ASSERT(event->deltatime == 0x7C);
   ASSERT(event->type == COPYRIGHT_NOTICE);
-  struct text_buffer* text_buffer = (struct text_buffer*)event->body;
-  ASSERT(text_buffer->length == 2);
-  ASSERT(text_buffer->text[0] == 'h');
-  ASSERT(text_buffer->text[1] == 'i');
+  struct byte_buffer* byte_buffer = (struct byte_buffer*)event->body;
+  ASSERT(byte_buffer->length == 2);
+  ASSERT((char)byte_buffer->bytes[0] == 'h');
+  ASSERT((char)byte_buffer->bytes[1] == 'i');
   return TEST_PASS;
 }
 
@@ -47,10 +47,10 @@ static int reads_track_name() {
   ASSERT(event != NULL);
   ASSERT(event->deltatime == 0x7C);
   ASSERT(event->type == TRACK_NAME);
-  struct text_buffer* text_buffer = (struct text_buffer*)event->body;
-  ASSERT(text_buffer->length == 2);
-  ASSERT(text_buffer->text[0] == 'h');
-  ASSERT(text_buffer->text[1] == 'i');
+  struct byte_buffer* byte_buffer = (struct byte_buffer*)event->body;
+  ASSERT(byte_buffer->length == 2);
+  ASSERT((char)byte_buffer->bytes[0] == 'h');
+  ASSERT((char)byte_buffer->bytes[1] == 'i');
   return TEST_PASS;
 }
 
@@ -61,10 +61,10 @@ static int reads_instrument_name() {
   ASSERT(event != NULL);
   ASSERT(event->deltatime == 0x7C);
   ASSERT(event->type == INSTRUMENT_NAME);
-  struct text_buffer* text_buffer = (struct text_buffer*)event->body;
-  ASSERT(text_buffer->length == 2);
-  ASSERT(text_buffer->text[0] == 'h');
-  ASSERT(text_buffer->text[1] == 'i');
+  struct byte_buffer* byte_buffer = (struct byte_buffer*)event->body;
+  ASSERT(byte_buffer->length == 2);
+  ASSERT((char)byte_buffer->bytes[0] == 'h');
+  ASSERT((char)byte_buffer->bytes[1] == 'i');
   return TEST_PASS;
 }
 
@@ -75,10 +75,10 @@ static int reads_lyric() {
   ASSERT(event != NULL);
   ASSERT(event->deltatime == 0x7C);
   ASSERT(event->type == LYRIC);
-  struct text_buffer* text_buffer = (struct text_buffer*)event->body;
-  ASSERT(text_buffer->length == 2);
-  ASSERT(text_buffer->text[0] == 'h');
-  ASSERT(text_buffer->text[1] == 'i');
+  struct byte_buffer* byte_buffer = (struct byte_buffer*)event->body;
+  ASSERT(byte_buffer->length == 2);
+  ASSERT((char)byte_buffer->bytes[0] == 'h');
+  ASSERT((char)byte_buffer->bytes[1] == 'i');
   return TEST_PASS;
 }
 
@@ -89,10 +89,10 @@ static int reads_marker() {
   ASSERT(event != NULL);
   ASSERT(event->deltatime == 0x7C);
   ASSERT(event->type == MARKER);
-  struct text_buffer* text_buffer = (struct text_buffer*)event->body;
-  ASSERT(text_buffer->length == 2);
-  ASSERT(text_buffer->text[0] == 'h');
-  ASSERT(text_buffer->text[1] == 'i');
+  struct byte_buffer* byte_buffer = (struct byte_buffer*)event->body;
+  ASSERT(byte_buffer->length == 2);
+  ASSERT((char)byte_buffer->bytes[0] == 'h');
+  ASSERT((char)byte_buffer->bytes[1] == 'i');
   return TEST_PASS;
 }
 
@@ -103,10 +103,10 @@ static int reads_cue_point() {
   ASSERT(event != NULL);
   ASSERT(event->deltatime == 0x7C);
   ASSERT(event->type == CUE_POINT);
-  struct text_buffer* text_buffer = (struct text_buffer*)event->body;
-  ASSERT(text_buffer->length == 2);
-  ASSERT(text_buffer->text[0] == 'h');
-  ASSERT(text_buffer->text[1] == 'i');
+  struct byte_buffer* byte_buffer = (struct byte_buffer*)event->body;
+  ASSERT(byte_buffer->length == 2);
+  ASSERT((char)byte_buffer->bytes[0] == 'h');
+  ASSERT((char)byte_buffer->bytes[1] == 'i');
   return TEST_PASS;
 }
 

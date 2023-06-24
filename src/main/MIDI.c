@@ -18,6 +18,10 @@ struct MIDI_file* read_MIDI_file(char* filename) {
   struct MIDI_file* MIDI_file = malloc(sizeof(struct MIDI_file));
   MIDI_file->index = 0;
   MIDI_file->bytes = read_file_to_byte_array(filename, &MIDI_file->length);
+  if (MIDI_file->bytes == NULL) {
+    printf("Error: file %s not found", filename);
+    exit(1);
+  }
   return MIDI_file;
 }
 
@@ -90,4 +94,15 @@ struct MIDI_track* next_MIDI_track(struct MIDI_file* MIDI_file) {
   MIDI_track->length = length;
   MIDI_track->events = events;
   return MIDI_track;
+}
+
+struct MIDI* read_MIDI(char* filename) {
+  struct MIDI_file* MIDI_file = read_MIDI_file(filename);
+  struct MIDI* MIDI = (struct MIDI*)malloc(sizeof(struct MIDI));
+  MIDI->header = next_MIDI_header(MIDI_file);
+  MIDI->tracks = malloc(MIDI->header->tracks * sizeof(struct MIDI_track*));
+  for (int i = 0; i < MIDI->header->tracks; i++) MIDI->tracks[i] = next_MIDI_track(MIDI_file);
+  free(MIDI_file->bytes);
+  free(MIDI_file);
+  return MIDI;
 }

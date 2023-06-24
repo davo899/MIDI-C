@@ -22,7 +22,7 @@ static int reading_from_non_existent_file_returns_null() {
 }
 
 static int can_read_MIDI_file() {
-  read_MIDI_file("test.mid");
+  read_MIDI_file("src/test/test.mid");
   return TEST_PASS;
 }
 
@@ -159,6 +159,11 @@ static int can_read_track() {
   return TEST_PASS;
 }
 
+static int can_read_MIDI() {
+  read_MIDI("src/test/test.mid");
+  return TEST_PASS;
+}
+
 static struct test tests[] = {
   { .name = "Reading from non existent file returns null", .function = &reading_from_non_existent_file_returns_null },
   { .name = "Can read file to byte array", .function = &can_read_file_to_byte_array },
@@ -180,6 +185,7 @@ static struct test tests[] = {
   { .name = "Reading invalid header returns NULL", .function = &invalid_header_returns_null },
 
   { .name = "Can read track", .function = &can_read_track },
+  { .name = "Can read MIDI", .function = &can_read_MIDI },
 };
 
 INIT_TEST_GROUP(MIDI);

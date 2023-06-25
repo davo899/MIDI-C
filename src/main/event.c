@@ -15,6 +15,6 @@ struct event* next_track_event(struct MIDI_file* MIDI_file) {
 }
 
 struct event* unimplemented_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code) {
-  printf("Error: encountered unknown event code %x", event_code);
+  printf("Error: encountered unknown event code 0x%X", event_code);
   exit(1);
 }

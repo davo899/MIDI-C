@@ -54,7 +54,7 @@ struct event* system_event_reader(struct MIDI_file* MIDI_file, uint8_t event_cod
 
     default:
       free(event);
-      event = unimplemented_event_reader(MIDI_file);
+      event = unimplemented_event_reader(MIDI_file, event_code);
   }
 
   return event;

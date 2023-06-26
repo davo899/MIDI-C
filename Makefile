@@ -15,7 +15,8 @@ dirs:
 $(OBJ_DIR)/%.o: src/%.c $(DEPS) dirs
 	$(CC) -c -o $@ $<
 
-lib: $(wildcard $(OBJ_DIR)/main/*.o)
+lib: $(patsubst src/main/%.c,$(OBJ_DIR)/main/%.o,$(wildcard src/main/*.c))
+	rm -f lib_MIDI.a
 	ar rcs lib_MIDI.a $(patsubst src/main/%.c,$(OBJ_DIR)/main/%.o,$(wildcard src/main/*.c))
 
 .PHONY: clean

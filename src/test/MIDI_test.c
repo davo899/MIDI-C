@@ -150,12 +150,49 @@ static int can_read_track() {
 
   ASSERT(MIDI_track->events[1]->deltatime == 0x12);
   ASSERT(MIDI_track->events[1]->type == NOTE_OFF);
-  ASSERT(((struct MIDI_event*)MIDI_track->events[0]->body)->channel == 0xA);
+  ASSERT(((struct MIDI_event*)MIDI_track->events[1]->body)->channel == 0xA);
   ASSERT(((struct note_toggle*)((struct MIDI_event*)MIDI_track->events[1]->body)->body)->key == 0x7F);
   ASSERT(((struct note_toggle*)((struct MIDI_event*)MIDI_track->events[1]->body)->body)->velocity == 0x19);
 
   ASSERT(MIDI_track->events[2]->deltatime == 0x5B);
   ASSERT(MIDI_track->events[2]->type == END_OF_TRACK);
+  return TEST_PASS;
+}
+
+static int can_read_running_status() {
+  uint8_t bytes[] = {
+    0x4D, 0x54, 0x72, 0x6B, // MTrk
+    0x00, 0x00, 0x00, 0x0C, // Length
+    0x68, 0x90, 0x3C, 0x7F, // Note on
+    0x00, 0x40, 0x7F,             // Note on
+    0x01, 0x43, 0x7F,             // Note on
+    0x5B, 0xFF, 0x2F, 0x00  // Track end
+  };
+  INIT_MIDI_FILE(MIDI_file);
+  struct MIDI_track* MIDI_track = next_MIDI_track(&MIDI_file);
+  ASSERT(MIDI_track != NULL);
+  ASSERT(MIDI_track->length == 4);
+
+  ASSERT(MIDI_track->events[0]->deltatime == 0x68);
+  ASSERT(MIDI_track->events[0]->type == NOTE_ON);
+  ASSERT(((struct MIDI_event*)MIDI_track->events[0]->body)->channel == 0x0);
+  ASSERT(((struct note_toggle*)((struct MIDI_event*)MIDI_track->events[0]->body)->body)->key == 0x3C);
+  ASSERT(((struct note_toggle*)((struct MIDI_event*)MIDI_track->events[0]->body)->body)->velocity == 0x7F);
+
+  ASSERT(MIDI_track->events[1]->deltatime == 0x00);
+  ASSERT(MIDI_track->events[1]->type == NOTE_ON);
+  ASSERT(((struct MIDI_event*)MIDI_track->events[1]->body)->channel == 0x0);
+  ASSERT(((struct note_toggle*)((struct MIDI_event*)MIDI_track->events[1]->body)->body)->key == 0x40);
+  ASSERT(((struct note_toggle*)((struct MIDI_event*)MIDI_track->events[1]->body)->body)->velocity == 0x7F);
+
+  ASSERT(MIDI_track->events[2]->deltatime == 0x01);
+  ASSERT(MIDI_track->events[2]->type == NOTE_ON);
+  ASSERT(((struct MIDI_event*)MIDI_track->events[2]->body)->channel == 0x0);
+  ASSERT(((struct note_toggle*)((struct MIDI_event*)MIDI_track->events[2]->body)->body)->key == 0x43);
+  ASSERT(((struct note_toggle*)((struct MIDI_event*)MIDI_track->events[2]->body)->body)->velocity == 0x7F);
+
+  ASSERT(MIDI_track->events[3]->deltatime == 0x5B);
+  ASSERT(MIDI_track->events[3]->type == END_OF_TRACK);
   return TEST_PASS;
 }
 
@@ -183,8 +220,8 @@ static struct test tests[] = {
 
   { .name = "Can read header", .function = &can_read_header },
   { .name = "Reading invalid header returns NULL", .function = &invalid_header_returns_null },
-
   { .name = "Can read track", .function = &can_read_track },
+  { .name = "Can read running status", .function = &can_read_running_status },
   { .name = "Can read MIDI", .function = &can_read_MIDI },
 };
 

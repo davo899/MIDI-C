@@ -2,11 +2,10 @@
 #include "../main/MIDI_internal.h"
 
 static int reads_note_off() {
-  uint8_t bytes[] = { 0x03, 0x8A, 0x7F, 0x3A };
+  uint8_t bytes[] = { 0x7F, 0x3A };
   INIT_MIDI_FILE(MIDI_file);
-  struct event* event = next_track_event(&MIDI_file);
+  struct event* event = next_track_event(&MIDI_file, 0x8A);
   ASSERT(event != NULL);
-  ASSERT(event->deltatime == 0x03);
   ASSERT(event->type == NOTE_OFF);
   struct MIDI_event* MIDI_event = (struct MIDI_event*)event->body;
   ASSERT(MIDI_event->channel == 0xA);
@@ -17,11 +16,10 @@ static int reads_note_off() {
 }
 
 static int reads_note_on() {
-  uint8_t bytes[] = { 0x03, 0x9A, 0x7F, 0x3A };
+  uint8_t bytes[] = { 0x7F, 0x3A };
   INIT_MIDI_FILE(MIDI_file);
-  struct event* event = next_track_event(&MIDI_file);
+  struct event* event = next_track_event(&MIDI_file, 0x9A);
   ASSERT(event != NULL);
-  ASSERT(event->deltatime == 0x03);
   ASSERT(event->type == NOTE_ON);
   struct MIDI_event* MIDI_event = (struct MIDI_event*)event->body;
   ASSERT(MIDI_event->channel == 0xA);
@@ -32,11 +30,10 @@ static int reads_note_on() {
 }
 
 static int reads_polyphonic_key_pressure() {
-  uint8_t bytes[] = { 0x03, 0xAA, 0x7F, 0x3A };
+  uint8_t bytes[] = { 0x7F, 0x3A };
   INIT_MIDI_FILE(MIDI_file);
-  struct event* event = next_track_event(&MIDI_file);
+  struct event* event = next_track_event(&MIDI_file, 0xAA);
   ASSERT(event != NULL);
-  ASSERT(event->deltatime == 0x03);
   ASSERT(event->type == POLYPHONIC_KEY_PRESSURE);
   struct MIDI_event* MIDI_event = (struct MIDI_event*)event->body;
   ASSERT(MIDI_event->channel == 0xA);
@@ -47,11 +44,10 @@ static int reads_polyphonic_key_pressure() {
 }
 
 static int reads_control_change() {
-  uint8_t bytes[] = { 0x03, 0xBA, 0x7F, 0x3A };
+  uint8_t bytes[] = { 0x7F, 0x3A };
   INIT_MIDI_FILE(MIDI_file);
-  struct event* event = next_track_event(&MIDI_file);
+  struct event* event = next_track_event(&MIDI_file, 0xBA);
   ASSERT(event != NULL);
-  ASSERT(event->deltatime == 0x03);
   ASSERT(event->type == CONTROL_CHANGE);
   struct MIDI_event* MIDI_event = (struct MIDI_event*)event->body;
   ASSERT(MIDI_event->channel == 0xA);
@@ -62,11 +58,10 @@ static int reads_control_change() {
 }
 
 static int reads_program_change() {
-  uint8_t bytes[] = { 0x03, 0xCA, 0x7F };
+  uint8_t bytes[] = { 0x7F };
   INIT_MIDI_FILE(MIDI_file);
-  struct event* event = next_track_event(&MIDI_file);
+  struct event* event = next_track_event(&MIDI_file, 0xCA);
   ASSERT(event != NULL);
-  ASSERT(event->deltatime == 0x03);
   ASSERT(event->type == PROGRAM_CHANGE);
   struct MIDI_event* MIDI_event = (struct MIDI_event*)event->body;
   ASSERT(MIDI_event->channel == 0xA);
@@ -75,11 +70,10 @@ static int reads_program_change() {
 }
 
 static int reads_channel_pressure() {
-  uint8_t bytes[] = { 0x03, 0xDA, 0x7F };
+  uint8_t bytes[] = { 0x7F };
   INIT_MIDI_FILE(MIDI_file);
-  struct event* event = next_track_event(&MIDI_file);
+  struct event* event = next_track_event(&MIDI_file, 0xDA);
   ASSERT(event != NULL);
-  ASSERT(event->deltatime == 0x03);
   ASSERT(event->type == CHANNEL_PRESSURE);
   struct MIDI_event* MIDI_event = (struct MIDI_event*)event->body;
   ASSERT(MIDI_event->channel == 0xA);
@@ -88,11 +82,10 @@ static int reads_channel_pressure() {
 }
 
 static int reads_pitch_wheel_change() {
-  uint8_t bytes[] = { 0x03, 0xEA, 0x7A, 0x7F };
+  uint8_t bytes[] = { 0x7A, 0x7F };
   INIT_MIDI_FILE(MIDI_file);
-  struct event* event = next_track_event(&MIDI_file);
+  struct event* event = next_track_event(&MIDI_file, 0xEA);
   ASSERT(event != NULL);
-  ASSERT(event->deltatime == 0x03);
   ASSERT(event->type == PITCH_WHEEL_CHANGE);
   struct MIDI_event* MIDI_event = (struct MIDI_event*)event->body;
   ASSERT(MIDI_event->channel == 0xA);

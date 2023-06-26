@@ -82,12 +82,20 @@ struct MIDI_track* next_MIDI_track(struct MIDI_file* MIDI_file) {
   struct event** events = (struct event**)malloc(block_size * sizeof(struct event*));
   int length = 0;
 
+  bool first = true;
+  uint8_t running_status = 0;
   while (MIDI_file->index < chunk_end) {
     if (length >= block_size) {
       block_size *= 2;
       events = (struct event**)realloc(events, block_size * sizeof(struct event*));
     }
-    events[length++] = next_track_event(MIDI_file);
+    uint32_t deltatime = next_variable_length_quantity(MIDI_file);
+    if (first || MIDI_file->bytes[MIDI_file->index] >= 0x80) running_status = next_byte(MIDI_file);
+    struct event* event = next_track_event(MIDI_file, running_status);
+    if (event != NULL) event->deltatime = deltatime;
+
+    events[length++] = event;
+    first = false;
   }
 
   struct MIDI_track* MIDI_track = (struct MIDI_track*)malloc(sizeof(struct MIDI_track));

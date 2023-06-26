@@ -20,7 +20,7 @@ uint16_t next_half_word(struct MIDI_file* MIDI_file);
 uint32_t next_full_word(struct MIDI_file* MIDI_file);
 uint32_t next_variable_length_quantity(struct MIDI_file* MIDI_file);
 
-struct event* next_track_event(struct MIDI_file* MIDI_file);
+struct event* next_track_event(struct MIDI_file* MIDI_file, uint8_t event_code);
 struct event* unimplemented_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code);
 struct event* system_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code);
 struct event* MIDI_event_reader(struct MIDI_file* MIDI_file, uint8_t event_code);
